@@ -9,7 +9,7 @@
         return {
           restrict : 'AE',
           require: '?ngModel',
-          scope: { options:'=', ngDisabled: '='},
+          scope: { options:'=', ngDisabled: '=', start: '=', end: '=' },
           priority: 1,
           link : function(scope, element, attrs, ngModel) {
 
@@ -44,8 +44,8 @@
           var initialized = false;
 
           var init = function(value) {
-            scope.from = ''+scope.options.from;
-            scope.to = ''+scope.options.to;
+            scope.from = scope.start ? ''+scope.start : ''+scope.options.from;
+            scope.to = scope.end ? ''+scope.end : ''+scope.options.to;
             if (scope.options.calculate && angular.isFunction(scope.options.calculate)) {
               scope.from = scope.options.calculate(scope.from);
               scope.to = scope.options.calculate(scope.to);
@@ -150,7 +150,7 @@
               ngModel.$setViewValue(value);
             });
             if (scope.options.callback){
-              scope.options.callback(value, released);
+              scope.options.callback(value, released, this.inputNode[0].id);
             }
           };
 
@@ -174,7 +174,8 @@
             disabler(value);
           });
 
-          scope.limitValue = function(value) {
+          scope.limitValue = function(value1, value2) {
+            var value = value1 || value2;
             if (scope.options.modelLabels) {
               if (angular.isFunction(scope.options.modelLabels)) {
                 return scope.options.modelLabels(value);
@@ -1255,8 +1256,8 @@
         '</div>' +
         '<div class="jslider-pointer"></div>' +
         '<div class="jslider-pointer jslider-pointer-to"></div>' +
-        '<div class="jslider-label" ng-show="options.limits"><span ng-bind="limitValue(options.from)"></span>{{options.dimension}}</div>' +
-        '<div class="jslider-label jslider-label-to" ng-show="options.limits"><span ng-bind="limitValue(options.to)"></span>{{options.dimension}}</div>' +
+        '<div class="jslider-label" ng-show="options.limits"><span ng-bind="limitValue(from, options.from)"></span>{{options.dimension}}</div>' +
+        '<div class="jslider-label jslider-label-to" ng-show="options.limits"><span ng-bind="limitValue(to, options.to)"></span>{{options.dimension}}</div>' +
         '<div class="jslider-value"><span></span>{{options.dimension}}</div>' +
         '<div class="jslider-value jslider-value-to"><span></span>{{options.dimension}}</div>' +
         '<div class="jslider-scale" id="{{sliderScaleDivTmplId}}"></div>' +
