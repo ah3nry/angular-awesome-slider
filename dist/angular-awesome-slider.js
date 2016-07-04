@@ -52,8 +52,8 @@
             }
 
             var OPTIONS = {
-              from: !scope.options.round ? parseInt(scope.options.from, 10) : parseFloat(scope.options.from),
-              to: !scope.options.round ? parseInt(scope.options.to, 10) : parseFloat(scope.options.to),
+              from: !scope.options.round ? parseInt(scope.from, 10) : parseFloat(scope.from),
+              to: !scope.options.round ? parseInt(scope.to, 10) : parseFloat(scope.to),
               step: scope.options.step,
               smooth: scope.options.smooth,
               limits: scope.options.limits,
